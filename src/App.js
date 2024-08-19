@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import LandingPage from './components/landingpage/landingPage.js';
 import ProductDetailPage from './components/products/productDetailPage.jsx';
 import ShoppingCart from './components/shoppingCart/ShoppingCart.jsx';
+import ContactPage from './components/contactPage/ContactPage.jsx';
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/product/:productId" element={<ProductDetailPage />} />
             <Route path="/cart" element={<ShoppingCart />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </div>
       </Router>
