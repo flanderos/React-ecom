@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { CartContext } from '../../contexts/CartContext';
+import { FaCheck } from 'react-icons/fa'; // Import the check icon
 
-// Styled components for the product card
 const Card = styled.div`
   border: 1px solid #ccc;
   padding: 16px;
@@ -9,29 +11,38 @@ const Card = styled.div`
   border-radius: 8px;
   background-color: #fff;
   text-align: center;
-  transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &:hover {
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); 
-    transform: translateY(-5px); 
-    cursor:pointer;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
   }
 `;
 
 const ProductImage = styled.img`
   width: 100%;
-  height: auto;
+  height: 150px;
+  object-fit: cover;
   border-radius: 8px;
 `;
 
 const ProductTitle = styled.h2`
   font-size: 1.5rem;
   color: #333;
+  margin: 10px 0;
 `;
 
 const ProductDescription = styled.p`
   color: #666;
   font-size: 0.9rem;
+  flex-grow: 1;
+  margin: 10px 0;
 `;
 
 const Price = styled.p`
@@ -46,6 +57,13 @@ const DiscountedPrice = styled.p`
   font-weight: bold;
 `;
 
+const OriginalPrice = styled.span`
+  font-size: 1rem;
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 10px;
+`;
+
 const Tags = styled.div`
   margin-top: 8px;
   display: flex;
@@ -55,9 +73,14 @@ const Tags = styled.div`
 
 const Tag = styled.span`
   background-color: #eee;
-  padding: 4px 8px;
+  padding: 4px 4px;
   border-radius: 4px;
   font-size: 0.8rem;
+  color: #333;
+
+  &:hover {
+    background-color: #ddd;
+  }
 `;
 
 const Rating = styled.p`
@@ -72,40 +95,102 @@ const Reviews = styled.div`
   font-size: 0.9rem;
 `;
 
+const AddToCartButton = styled.button`
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #218838;
+  }
+`;
+
+const ViewButton = styled(Link)`
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
 const ProductCard = ({ product }) => {
-  const { title, description, price, discountedPrice, image, rating, tags, reviews, id } = product;
+  const { addToCart } = useContext(CartContext);
+  const [isAdded, setIsAdded] = useState(false); // State to manage button text/icon
+
+  const handleAddToCart = (e) => {
+    e.preventDefault(); // Prevent any default link or form behavior
+    e.stopPropagation(); // Stop event propagation to prevent navigation
+
+    addToCart(product); // Add the product to the cart
+
+    // Change button to check icon for 1 second
+    setIsAdded(true);
+    setTimeout(() => {
+      setIsAdded(false); // Revert to "Add to Cart" after 1 second
+    }, 1000);
+  };
 
   return (
     <Card>
-      <ProductImage src={image.url} alt={title} />
-      <ProductTitle>{title}</ProductTitle>
-      <ProductDescription>{description}</ProductDescription>
-      
-      {/* Display discounted price if available, otherwise display regular price */}
-      {discountedPrice && discountedPrice < price ? (
-        <DiscountedPrice>Discounted Price: ${discountedPrice}</DiscountedPrice>
+      <ProductImage src={product.image?.url} alt={product.title} />
+      <ProductTitle>{product.title}</ProductTitle>
+      <ProductDescription>{product.description || "No description available."}</ProductDescription>
+
+      {product.discountedPrice && product.discountedPrice < product.price ? (
+        <>
+          <DiscountedPrice>Discounted Price: ${product.discountedPrice}</DiscountedPrice>
+          <OriginalPrice>${product.price}</OriginalPrice>
+        </>
       ) : (
-        <Price>Price: ${price}</Price>
+        <Price>${product.price},-</Price>
       )}
-      
-      {/* Display rating if available */}
-      {rating && <Rating>Rating: {rating}/5</Rating>}
-      
-      {/* Display tags */}
-      {tags && tags.length > 0 && (
+
+      {product.rating ? (
+        <Rating>Rating: {product.rating}/5</Rating>
+      ) : (
+        <Rating>No rating available</Rating>
+      )}
+
+      {product.tags && product.tags.length > 0 && (
         <Tags>
-          {tags.map((tag, index) => (
+          {product.tags.map((tag, index) => (
             <Tag key={index}>{tag}</Tag>
           ))}
         </Tags>
       )}
-      
-      {/* Display reviews count */}
-      {reviews && reviews.length > 0 && (
-        <Reviews>{reviews.length} Reviews</Reviews>
+
+      {product.reviews && product.reviews.length > 0 ? (
+        <Reviews>{product.reviews.length} Reviews</Reviews>
+      ) : (
+        <Reviews>No reviews available</Reviews>
       )}
+
+      <AddToCartButton onClick={handleAddToCart}>
+        {isAdded ? <FaCheck /> : "Add to Cart"} {/* Change text to icon on click */}
+      </AddToCartButton>
+      
+      <ViewButton to={`/product/${product.id}`}>View</ViewButton>
     </Card>
   );
 };
 
 export default ProductCard;
+
+
+
