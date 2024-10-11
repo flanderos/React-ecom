@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
 const FormContainer = styled.div`
@@ -77,7 +77,8 @@ const ContactPage = () => {
     return emailRegex.test(email);
   };
 
-  const validateForm = () => {
+  // Memoize validateForm to avoid unnecessary re-renders
+  const validateForm = useCallback(() => {
     const newErrors = {};
 
     if (fullName.length < 3) {
@@ -100,11 +101,11 @@ const ContactPage = () => {
     setIsFormValid(Object.keys(newErrors).length === 0);
 
     return Object.keys(newErrors).length === 0;
-  };
+  }, [fullName, subject, email, body]); // Memoize based on input fields
 
   useEffect(() => {
     validateForm(); // Validate form whenever any of the input fields change
-  }, [fullName, subject, email, body]); // Fjernet validateForm fra avhengighetsarrayen
+  }, [fullName, subject, email, body, validateForm]); // Add validateForm to dependencies
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -168,3 +169,4 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
+
