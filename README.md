@@ -29,10 +29,12 @@ git clone https://github.com/flanderos/React-ecom
 ```
 
 Make sure you have Node.js installed, then run the following command to install all necessary dependencies:
-
+```
 npm install
+```
+```
 npm start
-
+```
 
 
 
