@@ -1,0 +1,43 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 30%, #fad0c4 30%, #fbc2eb 50%, #a18cd1 70%, #fad0c4 100%);
+    background-size: cover; 
+    background-attachment: fixed; 
+    overflow-x: hidden;
+  }
+  
+  body {
+    max-width: 1800px; 
+    width: 100%; 
+    box-sizing: border-box;
+  }
+  
+  main {
+    width: 100%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+
+  #root {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  .kPHyLz {
+    margin-top: 150px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+

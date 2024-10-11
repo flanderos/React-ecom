@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from './specificProductCard';
 
+
 function ProductDetailPage() {
     const { productId } = useParams(); // Retrieves the product ID from the URL
     const [product, setProduct] = useState(null); // State to hold the product details
@@ -24,8 +25,8 @@ function ProductDetailPage() {
             }
         };
     
-        fetchProduct(); // Invoke the fetch function
-    }, [productId]); // Dependency array includes productId to refetch if it changes
+        fetchProduct(); 
+    }, [productId]); 
 
     return (
         <div>

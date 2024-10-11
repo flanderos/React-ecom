@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import styled from 'styled-components';
-import Header from '../Header/Header';
+import { useNavigate } from 'react-router-dom';
 
 const CartContainer = styled.div`
   max-width: 800px;
@@ -42,11 +42,23 @@ const CartItemPrice = styled.p`
   color: #666;
 `;
 
-const CartItemQuantity = styled.input`
-  width: 50px;
-  padding: 5px;
-  margin-left: 20px;
-  font-size: 16px;
+const QuantityButtons = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const QuantityButton = styled.button`
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 `;
 
 const RemoveButton = styled.button`
@@ -86,47 +98,80 @@ const CheckoutButton = styled.button`
   }
 `;
 
-const ShoppingCart = () => {
-    const { cartItems, removeFromCart, updateQuantity } = useContext(CartContext);
+const ClearCartButton = styled.button`
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #ffc107;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
 
-    const handleQuantityChange = (productId, quantity) => {
-        if (quantity <= 0) {
-            removeFromCart(productId);
-        } else {
-            updateQuantity(productId, quantity);
+  &:hover {
+    background-color: #e0a800;
+  }
+`;
+
+const ShoppingCart = () => {
+    const { cartItems, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
+    const navigate = useNavigate();
+
+    // Increase product quantity by 1
+    const increaseQuantity = (productId) => {
+        const product = cartItems.find(item => item.id === productId);
+        if (product) {
+            updateQuantity(productId, product.quantity + 1);
         }
+    };
+
+    // Decrease product quantity by 1
+    const decreaseQuantity = (productId) => {
+        const product = cartItems.find(item => item.id === productId);
+        if (product && product.quantity > 1) {
+            updateQuantity(productId, product.quantity - 1);
+        } else {
+            removeFromCart(productId);
+        }
+    };
+
+    const handleCheckout = () => {
+        clearCart();
+        navigate('/checkout-success');
     };
 
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
     return (
-        <>
-            <Header />
-            <CartContainer>
-                <h1>Your Shopping Cart</h1>
-                {cartItems.length === 0 ? (
-                    <p>Your cart is empty</p>
-                ) : (
-                    cartItems.map(item => (
+        <CartContainer>
+            <h1>Your Shopping Cart</h1>
+            {cartItems.length === 0 ? (
+                <p>Your cart is empty</p>
+            ) : (
+                <>
+                    {cartItems.map(item => (
                         <CartItem key={item.id}>
                             <CartItemImage src={item.image?.url || "./images/default-placeholder.png"} alt={item.title} />
                             <CartItemDetails>
                                 <CartItemTitle>{item.title}</CartItemTitle>
                                 <CartItemPrice>${item.price}</CartItemPrice>
-                                <CartItemQuantity
-                                    type="number"
-                                    value={item.quantity}
-                                    onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
-                                />
+                                <QuantityButtons>
+                                    <QuantityButton onClick={() => decreaseQuantity(item.id)}>-</QuantityButton>
+                                    <span>{item.quantity}</span>
+                                    <QuantityButton onClick={() => increaseQuantity(item.id)}>+</QuantityButton>
+                                </QuantityButtons>
                             </CartItemDetails>
                             <RemoveButton onClick={() => removeFromCart(item.id)}>Remove</RemoveButton>
                         </CartItem>
-                    ))
-                )}
-                <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
-                <CheckoutButton>Proceed to Checkout</CheckoutButton>
-            </CartContainer>
-        </>
+                    ))}
+                    <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
+                    <CheckoutButton onClick={handleCheckout}>Proceed to Checkout</CheckoutButton>
+                    <ClearCartButton onClick={clearCart}>Clear All</ClearCartButton>
+                </>
+            )}
+        </CartContainer>
     );
 };
 

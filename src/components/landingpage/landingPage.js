@@ -6,22 +6,48 @@ import { Link } from 'react-router-dom';
 // Styled component for the product grid layout
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 20px; 
-  padding: 20px; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 10px; 
+  padding: 10px; 
+  align-items: start;
+  justify-items: center;
 
   // Responsive design: 
+  @media (max-width: 1340px) {
+    grid-template-columns: repeat(3, 1fr); // Tre kolonner for store tablets og mindre skjermer
+  }
+
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr); // Two columns for medium screens
+    grid-template-columns: repeat(2, 1fr); // To kolonner for medium skjermer
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; // Single column for small screens
+    grid-template-columns: 1fr; // En kolonne for små skjermer
   }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr; // En kolonne for ekstra små skjermer
+    gap: 5px; // Mindre avstand mellom elementene
+    padding: 5px; // Mindre padding for å utnytte plassen bedre
+  }
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin: 20px auto;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  display:flex;
+  justify-content: center;
 `;
 
 const LandingPage = () => {
   const [products, setProducts] = useState([]); // State to hold the list of products
+  const [searchTerm, setSearchTerm] = useState(''); // State to hold the search term
 
   // Fetch products from the API when the component mounts
   useEffect(() => {
@@ -38,14 +64,36 @@ const LandingPage = () => {
     fetchProducts(); // Invoke the fetch function
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
+  // Function to handle changes in the search input
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // Filter products based on the search term
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
+
   return (
-    <Grid>
-      {Array.isArray(products) && products.map(product => (
-        <Link to={`/product/${product.id}`} key={product.id}> {/* Each product links to its detail page here */}
-          <ProductCard product={product} /> {/* Render the product using the ProductCard component */}
-        </Link>
-      ))}
-    </Grid>
+    <>
+      <SearchInput
+        type="text"
+        placeholder="Search for products..."
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+      <Grid>
+        {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <Link to={`/product/${product.id}`} key={product.id}> {/* Each product links to its detail page here */}
+              <ProductCard product={product} /> {/* Render the product using the ProductCard component */}
+            </Link>
+          ))
+        ) : (
+          <p>No products found.</p> // Message displayed if no products match the search term
+        )}
+      </Grid>
+    </>
   );
 };
 
