@@ -77,7 +77,6 @@ const ContactPage = () => {
     return emailRegex.test(email);
   };
 
-  // Memoize validateForm to avoid unnecessary re-renders
   const validateForm = useCallback(() => {
     const newErrors = {};
 
@@ -101,18 +100,25 @@ const ContactPage = () => {
     setIsFormValid(Object.keys(newErrors).length === 0);
 
     return Object.keys(newErrors).length === 0;
-  }, [fullName, subject, email, body]); // Memoize based on input fields
+  }, [fullName, subject, email, body]);
 
   useEffect(() => {
-    validateForm(); // Validate form whenever any of the input fields change
-  }, [fullName, subject, email, body, validateForm]); // Add validateForm to dependencies
+    validateForm();
+  }, [fullName, subject, email, body, validateForm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
+      console.log({
+        fullName,
+        subject,
+        email,
+        body,
+      });
+
       alert('Form submitted successfully');
-      // Handle form submission here (e.g., send data to server)
+      
     }
   };
 
