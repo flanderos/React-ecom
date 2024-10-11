@@ -102,9 +102,11 @@ const ContactPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  useEffect(() => {
+/*   useEffect(() => {
     validateForm(); // Validate form whenever any of the input fields change
-  }, [fullName, subject, email, body]);
+  }, [fullName, subject, email, body]); */ 
+
+  //Commented out because of errormessage during netlify deploy
 
   const handleSubmit = (e) => {
     e.preventDefault();
