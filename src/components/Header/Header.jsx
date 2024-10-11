@@ -54,7 +54,7 @@ const CartCount = styled.span`
 `;
 
 const Header = () => {
-  const { getCartItemCount } = useContext(CartContext); // Bruk getCartItemCount for å få totalt antall varer
+  const { getCartItemCount } = useContext(CartContext); 
 
   return (
     <HeaderContainer>
@@ -66,7 +66,7 @@ const Header = () => {
       </NavBar>
       <CartIconContainer to="/cart">
         <FaShoppingCart />
-        {getCartItemCount() > 0 && <CartCount>{getCartItemCount()}</CartCount>} {/* Viser antall produkter */}
+        {getCartItemCount() > 0 && <CartCount>{getCartItemCount()}</CartCount>} {/* Displays number of products */}
       </CartIconContainer>
     </HeaderContainer>
   );

@@ -1,12 +1,12 @@
 import React, { createContext, useState } from 'react'; // Sørg for at useState er importert
 
-// Opprett Context
+// Create Context
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState({});
 
-    // Legg til produkt i handlekurven
+    // Add item to Cart
     const addToCart = (product) => {
         setCartItems(prevItems => {
             const existingProduct = prevItems[product.id];
@@ -30,7 +30,7 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    // Oppdater produktmengden
+    // Update Cart
     const updateQuantity = (productId, newQuantity) => {
         setCartItems(prevItems => {
             const existingProduct = prevItems[productId];
@@ -52,7 +52,7 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    // Fjern produkt fra handlekurven
+    // Remove items from Cart
     const removeFromCart = (productId) => {
         setCartItems(prevItems => {
             const { [productId]: removed, ...rest } = prevItems;
@@ -60,12 +60,12 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    // Tøm handlekurven
+    // Clear Cart
     const clearCart = () => {
         setCartItems({});
     };
 
-    // Beregn totalt antall varer i handlekurven
+    // Calculate the total number of items in the shopping cart
     const getCartItemCount = () => {
         return Object.values(cartItems).reduce((total, item) => total + item.quantity, 0);
     };

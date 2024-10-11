@@ -119,7 +119,7 @@ const ShoppingCart = () => {
     const { cartItems, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
     const navigate = useNavigate();
 
-    // Funksjon for å øke antallet av produktet
+    // Function to increase the quantity 
     const increaseQuantity = (productId) => {
         const product = cartItems[productId];
         if (product) {
@@ -127,23 +127,23 @@ const ShoppingCart = () => {
         }
     };
 
-    // Funksjon for å redusere antallet av produktet
+    // Function to reduce the number of the product
     const decreaseQuantity = (productId) => {
         const product = cartItems[productId];
         if (product && product.quantity > 1) {
             updateQuantity(productId, product.quantity - 1);
         } else {
-            removeFromCart(productId); // Fjern produktet hvis antall er 1
+            removeFromCart(productId); // Remove the product if count is 1
         }
     };
 
-    // Håndter utsjekk
+    // Handle checkout
     const handleCheckout = () => {
         clearCart();
         navigate('/checkout-success');
     };
 
-    // Beregn totalpris basert på antall produkter
+    // Calculate total price based on the number of products
     const totalPrice = Object.values(cartItems).reduce((total, item) => total + item.price * item.quantity, 0);
 
     return (
