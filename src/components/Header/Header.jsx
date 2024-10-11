@@ -12,7 +12,6 @@ const HeaderContainer = styled.header`
   padding: 20px;
   background-color: #333;
   color: white;
-  
 `;
 
 const NavBar = styled.nav`
@@ -54,9 +53,8 @@ const CartCount = styled.span`
   font-size: 12px;
 `;
 
-
 const Header = () => {
-  const { cartItems } = useContext(CartContext);
+  const { getCartItemCount } = useContext(CartContext); // Bruk getCartItemCount for å få totalt antall varer
 
   return (
     <HeaderContainer>
@@ -68,7 +66,7 @@ const Header = () => {
       </NavBar>
       <CartIconContainer to="/cart">
         <FaShoppingCart />
-        {cartItems.length > 0 && <CartCount>{cartItems.length}</CartCount>}
+        {getCartItemCount() > 0 && <CartCount>{getCartItemCount()}</CartCount>} {/* Viser antall produkter */}
       </CartIconContainer>
     </HeaderContainer>
   );

@@ -119,39 +119,41 @@ const ShoppingCart = () => {
     const { cartItems, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
     const navigate = useNavigate();
 
-    // Increase product quantity by 1
+    // Funksjon for å øke antallet av produktet
     const increaseQuantity = (productId) => {
-        const product = cartItems.find(item => item.id === productId);
+        const product = cartItems[productId];
         if (product) {
             updateQuantity(productId, product.quantity + 1);
         }
     };
 
-    // Decrease product quantity by 1
+    // Funksjon for å redusere antallet av produktet
     const decreaseQuantity = (productId) => {
-        const product = cartItems.find(item => item.id === productId);
+        const product = cartItems[productId];
         if (product && product.quantity > 1) {
             updateQuantity(productId, product.quantity - 1);
         } else {
-            removeFromCart(productId);
+            removeFromCart(productId); // Fjern produktet hvis antall er 1
         }
     };
 
+    // Håndter utsjekk
     const handleCheckout = () => {
         clearCart();
         navigate('/checkout-success');
     };
 
-    const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    // Beregn totalpris basert på antall produkter
+    const totalPrice = Object.values(cartItems).reduce((total, item) => total + item.price * item.quantity, 0);
 
     return (
         <CartContainer>
             <h1>Your Shopping Cart</h1>
-            {cartItems.length === 0 ? (
+            {Object.keys(cartItems).length === 0 ? (
                 <p>Your cart is empty</p>
             ) : (
                 <>
-                    {cartItems.map(item => (
+                    {Object.values(cartItems).map(item => (
                         <CartItem key={item.id}>
                             <CartItemImage src={item.image?.url || "./images/default-placeholder.png"} alt={item.title} />
                             <CartItemDetails>
