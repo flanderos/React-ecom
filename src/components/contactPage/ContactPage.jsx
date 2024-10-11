@@ -70,7 +70,7 @@ const ContactPage = () => {
   const [email, setEmail] = useState('');
   const [body, setBody] = useState('');
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false); // New state to track form validity
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -97,16 +97,14 @@ const ContactPage = () => {
     }
 
     setErrors(newErrors);
-    setIsFormValid(Object.keys(newErrors).length === 0); // Update form validity
+    setIsFormValid(Object.keys(newErrors).length === 0);
 
     return Object.keys(newErrors).length === 0;
   };
 
-/*   useEffect(() => {
+  useEffect(() => {
     validateForm(); // Validate form whenever any of the input fields change
-  }, [fullName, subject, email, body]); */ 
-
-  //Commented out because of errormessage during netlify deploy
+  }, [fullName, subject, email, body]); // Fjernet validateForm fra avhengighetsarrayen
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -170,4 +168,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-
