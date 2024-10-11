@@ -14,21 +14,21 @@ const Grid = styled.div`
 
   // Responsive design: 
   @media (max-width: 1340px) {
-    grid-template-columns: repeat(3, 1fr); // Tre kolonner for store tablets og mindre skjermer
+    grid-template-columns: repeat(3, 1fr); // Three columns for large tablets and smaller screens
   }
 
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr); // To kolonner for medium skjermer
+    grid-template-columns: repeat(2, 1fr); // Two columns for medium screens
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; // En kolonne for små skjermer
+    grid-template-columns: 1fr; // A column for small screens
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: 1fr; // En kolonne for ekstra små skjermer
-    gap: 5px; // Mindre avstand mellom elementene
-    padding: 5px; // Mindre padding for å utnytte plassen bedre
+    grid-template-columns: 1fr; // A column for extra small screens
+    gap: 5px; 
+    padding: 5px; 
   }
 `;
 
