@@ -41,4 +41,4 @@ npm start
 API 
 This application fetches product data from the following API:
 
-Noroff Online Shop API
+- [Noroff Online Shop API](https://v2.api.noroff.dev/online-shop)
