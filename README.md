@@ -22,15 +22,17 @@ This is a simple online shop application built with React, where users can brows
 
 Follow these steps to clone the repository and run the project locally on your machine.
 
-## 1 Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/flanderos/React-ecom
+```
 
 Make sure you have Node.js installed, then run the following command to install all necessary dependencies:
 
 npm install
 npm start
+
 
 
 
