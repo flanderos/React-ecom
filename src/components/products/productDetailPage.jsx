@@ -4,24 +4,22 @@ import ProductCard from './specificProductCard';
 
 
 function ProductDetailPage() {
-    const { productId } = useParams(); // Retrieves the product ID from the URL
-    const [product, setProduct] = useState(null); // State to hold the product details
-
-    console.log(productId); // Log the product ID for debugging
+    const { productId } = useParams(); 
+    const [product, setProduct] = useState(null); 
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                // Fetch product data from the API using the productId
+                
                 const response = await fetch(`https://v2.api.noroff.dev/online-shop/${productId}`);
-                const jsonData = await response.json(); // Parse the JSON response
-                console.log("Fetched data:", jsonData); // Log the fetched data for debugging
+                const jsonData = await response.json(); 
+              
                 if (!response.ok) {
-                    throw new Error(`HTTP status ${response.status}`); // Throw an error if the response status is not OK
+                    throw new Error(`HTTP status ${response.status}`);
                 }
-                setProduct(jsonData.data); // Update the state with the fetched product data
+                setProduct(jsonData.data); 
             } catch (error) {
-                console.error("Failed to fetch product:", error); // Log any errors that occur during the fetch
+                alert("Failed to fetch product:", error); 
             }
         };
     
@@ -30,10 +28,10 @@ function ProductDetailPage() {
 
     return (
         <div>
-            {product ? ( // Conditionally render the product details if the product is available
+            {product ? ( 
                 <ProductCard product={product} />
             ) : (
-                <p>Loading product details...</p> // Render a loading message if product data is not yet available
+                <p>Loading product details...</p> 
             )}
         </div>
     );
