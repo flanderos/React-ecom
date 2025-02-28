@@ -1,12 +1,12 @@
 import React, { createContext, useState } from 'react'; // Sørg for at useState er importert
 
-// Create Context
+
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState({});
 
-    // Add item to Cart
+    
     const addToCart = (product) => {
         setCartItems(prevItems => {
             const existingProduct = prevItems[product.id];
@@ -30,7 +30,7 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    // Update Cart
+ 
     const updateQuantity = (productId, newQuantity) => {
         setCartItems(prevItems => {
             const existingProduct = prevItems[productId];
@@ -52,7 +52,7 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    // Remove items from Cart
+   
     const removeFromCart = (productId) => {
         setCartItems(prevItems => {
             const { [productId]: removed, ...rest } = prevItems;
@@ -60,12 +60,12 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    // Clear Cart
+  
     const clearCart = () => {
         setCartItems({});
     };
 
-    // Calculate the total number of items in the shopping cart
+   
     const getCartItemCount = () => {
         return Object.values(cartItems).reduce((total, item) => total + item.quantity, 0);
     };
